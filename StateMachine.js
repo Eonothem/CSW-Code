@@ -1,4 +1,4 @@
-function StateStack(){
+function StateStack(debug){
     var stack = [];
     stack.push(new EmptyState());
 
@@ -6,26 +6,30 @@ function StateStack(){
         var top = stack[stack.length-1];
         
         top.update();
-        console.log("Updated "+top.stateName);
+        if(debug){console.log("Updated "+top.stateName);}
+    }
+
+    this.getTop = function(){
+        return stack[stack.length-1];
     }
 
     this.push = function(newState){
         var top = stack[stack.length-1];
         top.onExit();
-        console.log("Exited "+top.stateName);
+        if(debug){console.log("Exited "+top.stateName);}
         stack.push(newState);
         newState.onEnter();
-        console.log("Entered "+newState.stateName);
+        if(debug){console.log("Entered "+newState.stateName);}
     }
 
     this.pop = function(){
         var top = stack[stack.length-1];
         top.onExit();
-        console.log("Exited "+top.stateName);
+        if(debug){console.log("Exited "+top.stateName);}
         stack.pop();
         top = stack[stack.length-1];
         top.onEnter();
-        console.log("Entered "+top.stateName);
+        if(debug){console.log("Entered "+top.stateName);}
     }
 
     //Pops off everthing until it reaches EmptyState and then pushes resetTo
